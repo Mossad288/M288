@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Mai ❤️</title>
+    <style>
+        /* إعدادات الخطوط والعناصر العامة */
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a192f;
+        }
+
+        /* نظام النجوم المتحركة في الخلفية */
+        .stars-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: floatStars 6s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes floatStars {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* الشاشات الرئيسية */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+            transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 1. تصميم شاشة الدخول (أزرق فاتح قليلًا مع نجوم) */
+        #welcome-screen {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+        }
+
+        /* 2. تصميم الشاشات الداخلية (لبني هادي ومريح) */
+        .inner-screen {
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            color: #1e293b;
+            overflow-y: auto; /* يسمح بالتمرير إذا كانت الشاشة صغيرة */
+        }
+
+        /* تصميم البطاقات البيضاء الأنيقة داخل الشاشات */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInCard 0.8s ease-out;
+            margin: auto;
+        }
+
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الأسماء والنصوص العريضة */
+        .name-title {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* أزرار التحكم والتنقل */
+        .btn {
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #0369a1;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.6);
+        }
+
+        .btn-continue {
+            background-color: #ffffff;
+            color: #1e3a8a;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+        }
+        
+        .btn-continue:hover {
+            background-color: #f8fafc;
+            color: #0f172a;
+            box-shadow: 0 6px 20px rgba(255,255,255,0.5);
+        }
+
+        /* تنسيق العداد التصاعدي */
+        .timer-box {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #0369a1;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        /* تنسيق نص الرسالة الخاصة بك */
+        .love-letter {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #334155;
+            margin: 20px 0;
+            background: rgba(2, 132, 199, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            border-right: 4px solid #0284c7;
+            text-align: right;
+        }
+
+        /* معرض الصور (ألبوم ذكرياتنا) */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* مشغل الصوت الثابت المخفي */
+        #audio-element {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- حاوية تأثير النجوم المتحركة -->
+    <div class="stars-container" id="starsBox"></div>
+
+    <!-- 1. شاشة الدخول (أزرق فاتح بـ اسم مي) -->
+    <div id="welcome-screen" class="screen active">
+        <div class="name-title">Mai</div>
+        <button class="btn btn-continue" onclick="startExperience()">Continue</button>
+    </div>
+
+    <!-- 2. الصفحة الأولى: التاريخ والعداد والرسالة (لبني هادي) -->
+    <div id="counter-screen" class="screen inner-screen">
+        <div class="card">
+            <h2 style="color: #0284c7; margin-top: 0; font-size: 1.6rem;">تاريخ أول لقاء جمعنا 📅</h2>
+            <p style="font-size: 16px; color: #64748b; margin: 5px 0;">عرفتك في يوم: <span id="start-date-text"></span></p>
+            
+            <div id="timer" class="timer-box">جاري حساب الأيام...</div>
+            
+            <!-- رسالتك الخاصة تم إضافتها هنا بدقة -->
+            <div class="love-letter">
+                عايز اقولك مهما بعدنا هفضل احبك لاني اول مره الاحساس دا احسو مع حد بحبك جدا وهفضل احبك عمري كلو ي كل عمري وربنا يخليكي ليا ونفضل سوا ي حبيبت عيني بحبك لاخر عمري ❤️
+            </div>
+
+            <button class="btn" onclick="navigateTo('photos-screen')">Next</button>
+        </div>
+    </div>
+
+    <!-- 3. الصفحة الثانية: معرض الصور (لبني هادي) -->
+    <div id="photos-screen" class="screen inner-screen">
+        <div class="card">
+            <h2 style="color: #0284c7; margin-top: 0; font-size: 1.6rem;">ألبوم ذكرياتنا الصغير 📸</h2>
+            <div class="gallery">
+                <!-- استبدل هذه الروابط بأسماء صورك الحقيقية لاحقاً مثل img1.jpg -->
+                <img src="https://picsum.photos" alt="صورة 1">
+                <img src="https://picsum.photos" alt="صورة 2">
+                <img src="https://picsum.photos" alt="صورة 3">
+                <img src="https://picsum.photos" alt="صورة 4">
+            </div>
+            <button class="btn" style="background-color: #64748b;" onclick="navigateTo('counter-screen')">رجوع</button>
+        </div>
+    </div>
+
+    <!-- مشغل الموسيقى المخفي خلف الكواليس -->
+    <audio id="audio-element" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 1. توليد النجوم الطائرة تلقائياً في الخلفية
+        const starsBox = document.getElementById('starsBox');
+        const starCount = 60;
+
+        for (let i = 0; i < starCount; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDelay = `${Math.random() * 6}s`;
+            star.style.animationDuration = `${4 + Math.random() * 4}s`;
+            
+            let size = 2 + Math.random() * 4;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            starsBox.appendChild(star);
+        }
+
+        // 2. التحكم في تشغيل الأغنية والانتقال عند الضغط على Continue
+        function startExperience() {
+            const audio = document.getElementById('audio-element');
+            audio.play().catch(error => console.log("المتصفح حجب التشغيل التلقائي:", error));
+            navigateTo('counter-screen');
+        }
+
+        // 3. نظام التنقل السلس بين الشاشات
+        function navigateTo(screenId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // 4. إعدادات تاريخ التعارف (17/5/2025)
+        const year = 2025;
+        const month = 5; 
+        const day = 17;
+
+        document.getElementById('start-date-text').innerText = `${day}/${month}/${year}`;
+        const anniversaryDate = new Date(year, month - 1, day); 
+
+        // تحديث العداد التصاعدي كل ثانية
+        setInterval(() => {
+            const today = new Date();
+            const difference = today - anniversaryDate;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
